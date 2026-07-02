@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MindBridge 校园陪伴智能体</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <main class="app-shell">
+    <aside class="sidebar">
+      <section class="panel brand-panel">
+        <div class="brand-row">
+          <div class="logo">MB</div>
+          <div>
+            <p class="eyebrow">CAMPUS COMPANION AGENT</p>
+            <h1>MindBridge</h1>
+          </div>
+        </div>
+        <div class="system-stack">
+          <span id="serviceState" class="status-line warn">连接中</span>
+          <span id="modelState" class="status-line warn">模型读取中</span>
+        </div>
+        <img class="campus-art" src="/assets/mindbridge-campus-companion.png" alt="MindBridge 校园陪伴插画">
+      </section>
+
+      <form id="loginForm" class="panel login-panel">
+        <p class="eyebrow">ACCOUNT LOGIN</p>
+        <h2>账号登录</h2>
+        <label>
+          <span>用户名</span>
+          <input id="username" value="student" autocomplete="username">
+        </label>
+        <label>
+          <span>密码</span>
+          <input id="password" value="student123" type="password" autocomplete="current-password">
+        </label>
+        <button class="button primary full" type="submit">登录</button>
+        <p id="loginState" class="muted">学生：student / student123，管理员：admin / admin123</p>
+      </form>
+
+      <section id="accountPanel" class="panel account-panel" hidden>
+        <div>
+          <p class="eyebrow">当前账号</p>
+          <h2 id="activeAccount">未登录</h2>
+          <span id="activeRole" class="muted">访客</span>
+        </div>
+        <button id="switchAccount" class="button ghost" type="button">切换账号</button>
+      </section>
+
+      <section id="studentModes" class="panel modes-panel">
+        <p class="eyebrow">COMPANION MODES</p>
+        <h2>今日可以聊这些</h2>
+        <button class="mode-card" type="button" data-quick="我最近学习任务很多，想拆解一下今天的计划。">
+          <span class="mode-icon">✦</span>
+          <span><strong>学习规划</strong><small>复习、论文、项目思路</small></span>
+        </button>
+        <button class="mode-card" type="button" data-quick="我最近情绪不太好，晚上也总是睡不着。">
+          <span class="mode-icon">◐</span>
+          <span><strong>情绪梳理</strong><small>压力、焦虑、睡眠困扰</small></span>
+        </button>
+        <button class="mode-card" type="button" data-quick="我想练习一下怎么和老师或同学沟通这个问题。">
+          <span class="mode-icon">↘</span>
+          <span><strong>沟通演练</strong><small>室友、老师、同学交流</small></span>
+        </button>
+        <p class="notice">高风险表达会进入后台预警流程，普通聊天不会展示评估标签。</p>
+      </section>
+
+      <section id="adminRecordsPanel" class="panel admin-records-panel" hidden>
+        <div class="section-head compact">
+          <div>
+            <h2>后台记录</h2>
+            <p class="muted">管理员视图</p>
+          </div>
+          <button id="refreshAdminSide" class="button ghost" type="button">刷新</button>
+        </div>
+        <div id="sideReports" class="side-report-list"></div>
+      </section>
+    </aside>
+
+    <section id="studentView" class="workspace">
+      <header class="console-head">
+        <div>
+          <p class="eyebrow">MINDBRIDGE CONSOLE</p>
+          <h2>智能对话</h2>
+          <span id="studentName" class="muted">student</span>
+        </div>
+        <div class="session-tools">
+          <button id="newSession" class="button ghost" type="button">新对话</button>
+          <div class="session-status">
+            <span>会话状态</span>
+            <strong id="sessionBadge">READY</strong>
+          </div>
+        </div>
+      </header>
+
+      <section class="hero-welcome" id="welcomeHero">
+        <img src="/assets/mindbridge-campus-companion.png" alt="MindBridge 学习陪伴场景">
+        <p class="eyebrow">MINDBRIDGE COMPANION</p>
+        <h2>把今天的想法放在这里</h2>
+        <p>可以聊学习计划、概念理解、校园生活，也可以把一团乱的心情慢慢拆开。</p>
+        <div class="prompt-row">
+          <button type="button" data-quick="帮我把今天的学习计划拆成三步。">今晚学习计划</button>
+          <button type="button" data-quick="向我介绍一下 PCA 线性降维算法。">解释 PCA</button>
+          <button type="button" data-quick="我最近总是焦虑，想整理一下原因。">梳理焦虑</button>
+        </div>
+      </section>
+
+      <section id="messages" class="messages"></section>
+
+      <form id="chatForm" class="composer">
+        <div class="tool-row">
+          <button type="button" data-quick="帮我把这个任务拆解一下。">任务拆解</button>
+          <button type="button" data-quick="请用简单例子解释这个概念。">概念讲解</button>
+          <button type="button" data-quick="我想整理一下现在的情绪。">情绪整理</button>
+        </div>
+        <div class="input-row">
+          <textarea id="messageInput" placeholder="输入你想说的话" rows="3"></textarea>
+          <button id="sendButton" class="button primary send-button" type="submit">发送</button>
+        </div>
+      </form>
+    </section>
+
+    <section id="adminView" class="workspace admin-workspace" hidden>
+      <header class="console-head">
+        <div>
+          <p class="eyebrow">ADMIN CONSOLE</p>
+          <h2>管理后台</h2>
+          <span class="muted">查看学生对话记录、Excel 写入数据和高风险邮件通知。</span>
+        </div>
+        <button id="refreshAdmin" class="button ghost" type="button">刷新数据</button>
+      </header>
+
+      <section class="metric-grid">
+        <article class="metric-card"><strong id="metricReports">0</strong><span>风险/咨询报告</span></article>
+        <article class="metric-card danger"><strong id="metricHigh">0</strong><span>高风险记录</span></article>
+        <article class="metric-card"><strong id="metricExcel">0</strong><span>Excel 写入</span></article>
+        <article class="metric-card"><strong id="metricAlerts">0</strong><span>邮件成功</span></article>
+      </section>
+
+      <section class="panel upload-panel">
+        <div>
+          <h2>知识库上传</h2>
+          <p class="muted">支持 PDF、Markdown、txt 文件</p>
+        </div>
+        <form id="knowledgeUploadForm" class="upload-row">
+          <input id="knowledgeFile" type="file" accept=".pdf,.md,.markdown,.txt,application/pdf,text/markdown,text/plain">
+          <button class="button ghost" type="button" id="chooseFileButton">选择文件</button>
+          <button class="button ghost" type="submit">上传</button>
+          <span id="knowledgeUploadState" class="muted">等待选择文件</span>
+        </form>
+      </section>
+
+      <section class="insight-grid">
+        <article class="panel stat-panel">
+          <h3>风险等级</h3>
+          <div id="riskStats" class="stat-list"></div>
+        </article>
+        <article class="panel stat-panel">
+          <h3>情绪分布</h3>
+          <div id="emotionStats" class="stat-list"></div>
+        </article>
+        <article class="panel stat-panel">
+          <h3>意图类型</h3>
+          <div id="intentStats" class="stat-list"></div>
+        </article>
+        <article class="panel stat-panel">
+          <h3>工具状态</h3>
+          <div id="toolStats" class="stat-list"></div>
+        </article>
+      </section>
+
+      <section class="data-columns">
+        <article class="panel data-panel">
+          <h3>对话记录</h3>
+          <p class="muted">点击任一记录查看完整对话</p>
+          <div id="reports" class="record-list"></div>
+        </article>
+        <article class="panel data-panel">
+          <h3>Excel 写入数据</h3>
+          <p class="muted">点击记录查看写入字段详情</p>
+          <div id="excelRecords" class="record-list"></div>
+        </article>
+        <article class="panel data-panel">
+          <h3>邮件发送记录</h3>
+          <p class="muted">点击记录查看发送详情</p>
+          <div id="alertRecords" class="record-list"></div>
+        </article>
+      </section>
+    </section>
+  </main>
+
+  <div id="detailModal" class="modal" hidden>
+    <div class="modal-backdrop" data-close-modal></div>
+    <section class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <header class="modal-head">
+        <div>
+          <p id="modalKicker" class="eyebrow">DETAIL</p>
+          <h2 id="modalTitle">详情</h2>
+          <span id="modalSubTitle" class="muted"></span>
+        </div>
+        <button id="closeModal" class="button ghost" type="button">关闭</button>
+      </header>
+      <div id="modalBody" class="modal-body"></div>
+    </section>
+  </div>
+
+  <script src="/app.js"></script>
+</body>
+</html>
