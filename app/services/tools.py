@@ -37,7 +37,7 @@ class ToolOrchestrationService:
             else:
                 workbook = Workbook()
                 sheet = workbook.active
-                sheet.title = "MindBridge Risk Ledger"
+                sheet.title = "SoulFerry Risk Ledger"
                 sheet.append(["reportId", "riskLevel", "emotion", "confidence", "summary", "createdAt"])
             sheet.append([report.id, report.risk_level, report.emotion, report.confidence, report.summary, report.created_at.isoformat()])
             workbook.save(path)
@@ -147,7 +147,7 @@ class ToolOrchestrationService:
         display_name = user.display_name if user else ""
         return "\n".join(
             [
-                "MindBridge 检测到一条高风险心理预警，请尽快安排辅导员或管理员跟进。",
+                "SoulFerry 检测到一条高风险心理预警，请尽快安排辅导员或管理员跟进。",
                 "",
                 f"报告ID：{report.id}",
                 f"学生：{display_name} ({username})" if display_name else f"学生：{username}",

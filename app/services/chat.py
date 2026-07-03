@@ -12,7 +12,7 @@ from app.models.entities import ChatMessage, ChatSession, PsychologicalReport, U
 from app.schemas.dtos import ChatRequest, ChatStreamEvent
 from app.services.ai import AiClient
 from app.services.memory import RedisShortTermMemoryStore
-from app.services.mcp_client import McpToolError, MindBridgeMcpToolClient
+from app.services.mcp_client import McpToolError, SoulFerryMcpToolClient
 from app.services.privacy import PrivacySanitizer
 from app.services.tool_queue import ToolQueueService
 
@@ -39,7 +39,7 @@ class ChatService:
                 ToolQueueService(self.db, self.settings).enqueue_report(prepared["report_id"], prepared["risk_level"])
             else:
                 try:
-                    await MindBridgeMcpToolClient(self.settings).handle_report(prepared["report_id"], prepared["risk_level"])
+                    await SoulFerryMcpToolClient(self.settings).handle_report(prepared["report_id"], prepared["risk_level"])
                 except McpToolError as exc:
                     yield sse(
                         "error",

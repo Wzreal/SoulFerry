@@ -13,7 +13,7 @@ class McpToolError(RuntimeError):
     pass
 
 
-class MindBridgeMcpToolClient:
+class SoulFerryMcpToolClient:
     def __init__(self, settings: Settings):
         self.settings = settings
 
@@ -21,10 +21,10 @@ class MindBridgeMcpToolClient:
         try:
             async with self._session() as session:
                 results = [
-                    await self._call_tool(session, "mindbridge_excel_report", {"report_id": report_id}),
+                    await self._call_tool(session, "soulferry_excel_report", {"report_id": report_id}),
                 ]
                 if risk_level == RiskLevel.HIGH.value:
-                    results.append(await self._call_tool(session, "mindbridge_alert_notify", {"report_id": report_id}))
+                    results.append(await self._call_tool(session, "soulferry_alert_notify", {"report_id": report_id}))
                 return results
         except McpToolError:
             raise
@@ -37,7 +37,7 @@ class MindBridgeMcpToolClient:
             from mcp import ClientSession, StdioServerParameters
             from mcp.client.stdio import stdio_client
         except ImportError as exc:
-            raise McpToolError("缺少 mcp 依赖，无法通过 MCP 调用 MindBridge 工具") from exc
+            raise McpToolError("缺少 mcp 依赖，无法通过 MCP 调用 SoulFerry 工具") from exc
 
         project_root = self.settings.project_root
         env = os.environ.copy()

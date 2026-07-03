@@ -15,7 +15,7 @@ class GraphState(TypedDict):
 
 
 class LangGraphAgentRuntimeService(AgentRuntimeService):
-    """LangGraph implementation of the MindBridge multi-agent workflow."""
+    """LangGraph implementation of the SoulFerry multi-agent workflow."""
 
     framework_name = "langgraph"
 

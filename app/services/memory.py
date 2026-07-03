@@ -100,4 +100,4 @@ class RedisShortTermMemoryStore:
         )
 
     def _key(self, session_public_id: str) -> str:
-        return f"mindbridge:short-term-memory:{session_public_id}"
+        return f"soulferry:short-term-memory:{session_public_id}"

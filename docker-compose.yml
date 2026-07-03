@@ -56,7 +56,7 @@ services:
       TOOL_QUEUE_EMAIL_WORKERS: ${TOOL_QUEUE_EMAIL_WORKERS:-2}
       ALERT_EMAIL_DELIVERY_MODE: ${ALERT_EMAIL_DELIVERY_MODE:-log}
       ALERT_EMAIL_RATE_LIMIT_PER_MINUTE: ${ALERT_EMAIL_RATE_LIMIT_PER_MINUTE:-30}
-      EXCEL_PATH: /app/data/mindbridge-risk-ledger.xlsx
+      EXCEL_PATH: /app/data/soulferry-risk-ledger.xlsx
     ports:
       - "8080:8080"
     volumes:

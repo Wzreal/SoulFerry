@@ -11,7 +11,7 @@ from app.services.tool_queue import get_tool_queue_worker
 
 
 def create_app() -> FastAPI:
-    app = FastAPI(title="MindBridge Python", version="0.1.0")
+    app = FastAPI(title="SoulFerry", version="0.1.0")
 
     @app.on_event("startup")
     def startup() -> None:

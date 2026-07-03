@@ -10,12 +10,12 @@ except Exception as exc:  # pragma: no cover
     raise RuntimeError("请先安装 requirements.txt 中的 mcp 依赖") from exc
 
 
-mcp = FastMCP("mindbridge-python-tools")
+mcp = FastMCP("soulferry-python-tools")
 
 
 @mcp.tool()
-def mindbridge_excel_report(report_id: int) -> str:
-    """Write one psychological risk report into the MindBridge Excel ledger."""
+def soulferry_excel_report(report_id: int) -> str:
+    """Write one psychological risk report into the SoulFerry Excel ledger."""
     create_schema()
     db = SessionLocal()
     try:
@@ -29,7 +29,7 @@ def mindbridge_excel_report(report_id: int) -> str:
 
 
 @mcp.tool()
-def mindbridge_alert_notify(report_id: int) -> str:
+def soulferry_alert_notify(report_id: int) -> str:
     """Send a high-risk alert email and record the notification result for one psychological report."""
     create_schema()
     db = SessionLocal()

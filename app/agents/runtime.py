@@ -219,7 +219,7 @@ class AgentRuntimeService:
     def _rewrite_query(self, context: AgentContext) -> str:
         try:
             query = self.ai.complete([
-                AiMessage(role="system", content="你是 MindBridge 的 KnowledgeAgent。把学生输入改写成适合检索校园心理知识库的中文查询词，只输出查询词。"),
+                AiMessage(role="system", content="你是 SoulFerry 的 KnowledgeAgent。把学生输入改写成适合检索校园心理知识库的中文查询词，只输出查询词。"),
                 AiMessage(role="user", content=f"记忆摘要：\n{context.memory_brief}\n\n当前输入：\n{context.model_input}"),
             ]).strip()
             return (query or context.model_input)[:60]
@@ -231,7 +231,7 @@ class AgentRuntimeService:
             return "无相关历史记忆。"
         try:
             summary = self.ai.complete([
-                AiMessage(role="system", content="你是 MindBridge 的 MemoryAgent。只输出 1-3 条中文记忆要点，不输出风险等级或诊断。"),
+                AiMessage(role="system", content="你是 SoulFerry 的 MemoryAgent。只输出 1-3 条中文记忆要点，不输出风险等级或诊断。"),
                 AiMessage(role="user", content=f"当前输入：\n{current_input}\n\n最近历史：\n{history[-12:]}"),
             ]).strip()
             return summary[:400] or "无相关历史记忆。"

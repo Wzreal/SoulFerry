@@ -34,7 +34,7 @@ class Settings(BaseSettings):
     rag_eval_output: str = "target/rag-eval-report.json"
     rag_eval_enabled: bool = False
     rag_eval_exit_after_run: bool = False
-    excel_path: str = "data/mindbridge-risk-ledger.xlsx"
+    excel_path: str = "data/soulferry-risk-ledger.xlsx"
     redis_url: str = "redis://127.0.0.1:6379/0"
     redis_memory_ttl_seconds: int = 86400
     redis_memory_max_messages: int = 40
@@ -49,7 +49,7 @@ class Settings(BaseSettings):
     alert_email_delivery_mode: str = "log"
     alert_email_from: str = ""
     alert_email_to: str = ""
-    alert_email_subject_prefix: str = "[MindBridge 高风险预警]"
+    alert_email_subject_prefix: str = "[SoulFerry 高风险预警]"
     tool_queue_enabled: bool = True
     tool_queue_poll_interval_seconds: float = 1.0
     tool_queue_batch_size: int = 10
